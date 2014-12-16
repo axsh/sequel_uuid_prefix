@@ -143,8 +143,9 @@ module Sequel
             @uuid_prefix = prefix
           end
 
-          @uuid_prefix || (superclass.uuid_prefix if superclass.respond_to?(:uuid_prefix))
-                       || raise(UnsetUUIDPrefix, "uuid prefix is unset for: #{self}")
+          @uuid_prefix ||
+            (superclass.uuid_prefix if superclass.respond_to?(:uuid_prefix)) ||
+            raise(UnsetUUIDPrefix, "uuid prefix is unset for: #{self}")
         end
 
 
