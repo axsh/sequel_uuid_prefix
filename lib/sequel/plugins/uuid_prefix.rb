@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+require 'sequel/plugins/after_initialize'
+
 module Sequel
   module Plugins
     # Sequel::Model plugin to inject the UUIDPrefix feature to the model
@@ -18,6 +20,10 @@ module Sequel
       class UUIDPrefixDuplication < StandardError; end
       class UUIDDuplication < StandardError; end
       class UnsetUUIDPrefix < StandardError; end
+
+      def self.apply(model, _options = {})
+        model.plugin Sequel::Plugins::AfterInitialize
+      end
 
       def self.uuid_prefix_collection
         @uuid_prefix_collection ||= {}
