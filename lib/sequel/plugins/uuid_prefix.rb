@@ -94,12 +94,13 @@ module Sequel
 
           serialize_columns = []
 
-          require 'sequel/plugins/serialization'
-          if self.class.plugins.member?(Sequel::Plugins::Serialization)
-            self.class.deserialization_map.keys.each { |c|
-              serialize_columns << c
-              r[c] = self.__send__(c)
-            }
+          if defined? Sequel::Plugins::Serialization
+            if self.class.plugins.member?(Sequel::Plugins::Serialization)
+              self.class.deserialization_map.keys.each { |c|
+                serialize_columns << c
+                r[c] = self.__send__(c)
+              }
+            end
           end
 
           # convert Sequel::SQL::Blob column.
