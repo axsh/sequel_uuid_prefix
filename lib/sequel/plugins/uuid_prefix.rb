@@ -2,7 +2,7 @@
 
 module Sequel
   module Plugins
-    # Sequal::Model plugin to inject the UUIDPrefix feature to the model
+    # Sequel::Model plugin to inject the UUIDPrefix feature to the model
     # class.
     #
     # UUIDPrefix model supports the features below:
