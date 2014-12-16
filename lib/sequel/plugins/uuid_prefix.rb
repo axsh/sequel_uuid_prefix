@@ -16,6 +16,7 @@ module Sequel
 
       class InvalidUUIDError < StandardError; end
       class UUIDPrefixDuplication < StandardError; end
+      class UUIDDuplication < StandardError; end
 
       def self.uuid_prefix_collection
         @uuid_prefix_collection ||= {}
@@ -60,13 +61,15 @@ module Sequel
         def before_validation
           # trim uuid prefix if it is in the self[:uuid]
           self[:uuid].sub!(/^#{self.class.uuid_prefix}-/, '')
+
           super
         end
 
         def before_create
           if !self.class.find(:uuid=>self[:uuid]).nil?
-            raise "Duplicate UUID: #{self.canonical_uuid} already exists"
+            raise UUIDDuplication, "Duplicate UUID: #{self.canonical_uuid} already exists"
           end
+
           super
         end
 
