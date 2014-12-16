@@ -135,7 +135,9 @@ module Sequel
         #   Model1.new.canonical_uuid # == 'm-abcd1234'
         def uuid_prefix(prefix=nil)
           if prefix
-            raise UUIDPrefixDuplication, "Found collision for uuid_prefix key: #{prefix}" if UUIDPrefix.uuid_prefix_collection.has_key?(prefix)
+            if UUIDPrefix.uuid_prefix_collection.has_key?(prefix)
+              raise UUIDPrefixDuplication, "Found collision for uuid_prefix key: #{prefix}"
+            end
 
             UUIDPrefix.uuid_prefix_collection[prefix]={:class=>self}
             @uuid_prefix = prefix
