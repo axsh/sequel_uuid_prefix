@@ -87,7 +87,11 @@ module Sequel
         alias_method :cuuid, :canonical_uuid
 
         def to_hash()
-          r = self.values.dup.merge({:id=>self.id, :uuid=>canonical_uuid, :class_name => self.class.name.demodulize})
+          r = self.values.dup.merge({id: self.id,
+                                     uuid: canonical_uuid,
+                                     class_name: self.class.name.demodulize
+                                   })
+
           serialize_columns = []
 
           require 'sequel/plugins/serialization'
