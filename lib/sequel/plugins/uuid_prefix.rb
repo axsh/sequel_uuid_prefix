@@ -17,6 +17,7 @@ module Sequel
       class InvalidUUIDError < StandardError; end
       class UUIDPrefixDuplication < StandardError; end
       class UUIDDuplication < StandardError; end
+      class UnsetUUIDPrefix < StandardError; end
 
       def self.uuid_prefix_collection
         @uuid_prefix_collection ||= {}
@@ -140,7 +141,8 @@ module Sequel
             @uuid_prefix = prefix
           end
 
-          @uuid_prefix || (superclass.uuid_prefix if superclass.respond_to?(:uuid_prefix)) || raise("uuid prefix is unset for:#{self}")
+          @uuid_prefix || (superclass.uuid_prefix if superclass.respond_to?(:uuid_prefix))
+                       || raise(UnsetUUIDPrefix, "uuid prefix is unset for: #{self}")
         end
 
 
